@@ -3,10 +3,10 @@
 
 using namespace std;
 
-const int N=3;
+const int N=5;
 const int M=N;
 
-int MinUniq(int matrix[N][M]) {
+void MinUniq(int matrix[N][M]) {
     
     int sortedMas[N*M]{};
     sortedMas[0]=matrix[0][0];
@@ -27,40 +27,42 @@ int MinUniq(int matrix[N][M]) {
         }
     }
  
+    bool isFounded=false;
     int temp=sortedMas[0];
-    if (temp!= sortedMas[1]) {
-        return temp;
-    }
-    
-    for (int i=1; i<N*M;i++) {
-        if (temp==sortedMas[i]) continue;
-        else if (sortedMas[i]==sortedMas[i+1]) temp=sortedMas[i]; 
-            else return sortedMas[i];
 
+    if (!isFounded) {
+        for (int i=1; i<N*M;i++) {
+            if (temp==sortedMas[i]) continue;
+            else if (sortedMas[i]==sortedMas[i+1]) temp=sortedMas[i]; 
+                else  {temp =sortedMas[i]; isFounded=true; i=M*N;}
+
+        }
     }
-    return NULL;
+
+    if (isFounded) cout << "Минимальный из неповторяющихся элементов двумерного массива: " << temp << endl;
+    else cout << "Неповторяющиеся элементы двумерного массива отсутствуют" << endl;
+    return;
 }
 
 int main() {
     setlocale(LC_ALL,"russian");
     srand(time(NULL));
 
+    int matrix[N][M]{};
+
     while (true) {
-        int matrix[N][M]{};
         
         cout << "Массив: " << endl;
         for (int i=0;i<N;i++) {
             for (int j=0;j<M;j++) {
                 matrix[i][j] = rand()%11-5;
                 cout << matrix[i][j] << "\t";
-            }
+            }  
             cout << endl;
         }
         
-        int answer=MinUniq(matrix);
-        if (answer!=NULL) cout << "Минимальный из неповторяющихся элементов двумерного массива: " << answer << endl; else cout << "Неповторяющиеся элементы двумерного массива отсутствуют" << endl;
-
-        system("pause");
+        MinUniq(matrix);
+        cin.get();
     }   
     return 0;
 }
